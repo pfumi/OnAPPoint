@@ -24,7 +24,7 @@
 
         <ul class="nav navbar-nav navbar-right">
           @{
-            if (@HttpContext.Current.Session["AccessToken"] != null)
+            if (Session["AccessKey"] != null)
             {
               <li><a href="@Url.Action("Logout", "Home", null, Request.Url.Scheme)"><i class="ms-Icon ms-Icon--x"></i><b>x</b> Disconnect</a></li>
             }

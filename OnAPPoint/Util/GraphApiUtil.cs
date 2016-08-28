@@ -44,6 +44,7 @@ namespace OnAPPoint.Util
         if (result["error"] != null)
         {
           //TODO do something, logging at least
+          return items;
         }
         foreach (JObject obj in result["value"]) {
           items.Add(obj.ToObject<T>());

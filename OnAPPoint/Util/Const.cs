@@ -12,6 +12,7 @@ namespace OnAPPoint.Util
     {
       public static string ClientId => ConfigurationManager.AppSettings["ClientID"];
       public static string ClientSecret => ConfigurationManager.AppSettings["ClientSecret"];
+      public static string SessionAccessKey = "AccessKey";
 
       public static string AzureADAuthority = @"https://login.microsoftonline.com/common";
       public static string LogoutAuthority = @"https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=";

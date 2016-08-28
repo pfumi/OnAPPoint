@@ -221,6 +221,7 @@
     <Compile Include="Util\Const.cs" />
     <Compile Include="Util\GraphApiUtil.cs" />
     <Compile Include="Util\JsonUtil.cs" />
+    <Compile Include="Util\SessionAuthorizeAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

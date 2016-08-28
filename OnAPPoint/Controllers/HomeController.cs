@@ -66,7 +66,7 @@ namespace OnAPPoint.Controllers
           Const.Settings.GraphApiResource);
 
       // Save the token in the session.
-      Session.Add("AccessToken", authResult.AccessToken);
+      Session.Add(Const.Settings.SessionAccessKey, authResult.AccessToken);
 
       return RedirectToAction(nameof(Index));
 
