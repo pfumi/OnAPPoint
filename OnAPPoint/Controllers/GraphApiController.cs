@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace OnAPPoint.Controllers
 {
-  public class GraphTestController : Controller
+  public class GraphApiController : Controller
   {
     // GET: GraphTest
     public ActionResult Index()
