@@ -6,9 +6,12 @@
     <title>Index</title>
 </head>
 <body>
-    <h2>Home</h2>
-    <div>
-      <p>@ViewBag.Json</p>
-    </div>
+  <h2>Home</h2>
+
+  <form>
+    <p>
+      <button formaction="@Url.Content("~/home/login")">Mit Office 365 verbinden</button>
+    </p>
+  </form>
 </body>
 </html>

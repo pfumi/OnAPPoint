@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
-using static OnAPPoint.Util.GraphApiConst;
+using static OnAPPoint.Util.Const.GraphApi;
 
 namespace OnAPPoint.Util
 {
@@ -86,23 +86,6 @@ namespace OnAPPoint.Util
     {
       //TODO
     }
-  }
-
-  public class GraphApiConst
-  {
-
-    private static string Endpoint = "https://graph.microsoft.com/v1.0/me";
-
-    public static string Contacts = Endpoint + "/contacts";
-
-    public enum ItemType
-    {
-      Calendars,
-      Events,
-      Contacts,
-      Messages
-    }
-
   }
 
 }
