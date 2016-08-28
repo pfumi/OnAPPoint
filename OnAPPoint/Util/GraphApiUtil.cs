@@ -7,18 +7,17 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
-using static OnAPPoint.Util.Const.GraphApi;
 
 namespace OnAPPoint.Util
 {
-  public static class GraphApiUtil<T> where T : OutlookItem
+  public static class GraphApiUtil
   {
 
-    private static JsonSerializerSettings DefaultJsonSerializerSettings = new JsonSerializerSettings
-    {
-      NullValueHandling = NullValueHandling.Ignore
-    };
+    private static string Endpoint = Const.Settings.GraphApiResource + "/v1.0/me";
+    private static string Contacts = "/contacts";
+    private static string Calendars = "/calendars";
+    private static string Events = "/events";
+    private static string Messages = "/messages";
 
     public static string test()
     {
@@ -30,62 +29,34 @@ namespace OnAPPoint.Util
       email.Address = "master.muster@email.com";
       cont.EmailAddresses.Add(email);
       cont.MobilePhone = "0123456789";
-      string json = JsonConvert.SerializeObject(cont, Newtonsoft.Json.Formatting.Indented, DefaultJsonSerializerSettings);
-      return json;
+      return JsonUtil.seralizeObject(cont);
     }
 
-    private static async Task<T> GetItem(string query)
+    private static async Task<List<T>> GetItem<T>(string query, string accessToken)
     {
-      T item = default(T);
+      List<T> items = new List<T>();
       using (var client = new HttpClient())
       {
-        //TODO Authorization
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", null);
-        var response = await client.GetAsync(query);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        var response = await client.GetAsync(Endpoint + query);
         string json = await response.Content.ReadAsStringAsync();
         JObject result = JObject.Parse(await response.Content.ReadAsStringAsync());
-        if (result["error"] == null)
+        if (result["error"] != null)
         {
           //TODO do something, logging at least
         }
-        List<T> items = new List<T>();
         foreach (JObject obj in result["value"]) {
           items.Add(obj.ToObject<T>());
         }
       }
-      return item;
+      return items;
     }
 
-    public static async Task<T> GetItem(ItemType itemType)
+    public static async Task<List<Contact>> GetContacts(string accessToken)
     {
-      T item = default(T);
-      switch (itemType)
-      {
-        case ItemType.Contacts:
-          item = await GetItem(Contacts);
-          break;
-        case ItemType.Calendars:
-        case ItemType.Events:
-        case ItemType.Messages:
-          throw new NotSupportedException("GraphItem not supported.");
-      }
-      return item;
+      return await GetItem<Contact>(Contacts, accessToken);
     }
 
-    public static void PostItem(T item)
-    {
-      //TODO
-    }
-
-    public static void PatchItem(T item)
-    {
-      //TODO
-    }
-
-    public static void DeleteItem(T item)
-    {
-      //TODO
-    }
   }
 
 }

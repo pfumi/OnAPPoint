@@ -15,23 +15,9 @@ namespace OnAPPoint.Util
 
       public static string AzureADAuthority = @"https://login.microsoftonline.com/common";
       public static string LogoutAuthority = @"https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=";
+
+      public static string GraphApiResource = "https://graph.microsoft.com";
     }
  
-    public static class GraphApi
-    {
-
-      public static string ApiResource = "https://graph.microsoft.com";
-      public static string Endpoint = ApiResource + "/v1.0/me";
-      public static string Contacts = Endpoint + "/contacts";
-
-      public enum ItemType
-      {
-        Calendars,
-        Events,
-        Contacts,
-        Messages
-      }
-
-    }
   }
 }

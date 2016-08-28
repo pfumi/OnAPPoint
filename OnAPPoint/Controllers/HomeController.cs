@@ -43,7 +43,7 @@ namespace OnAPPoint.Controllers
 
       // Generate the parameterized URL for Azure login.
       Uri authUri = await authContext.GetAuthorizationRequestUrlAsync(
-          Const.GraphApi.ApiResource,
+          Const.Settings.GraphApiResource,
           Const.Settings.ClientId,
           loginRedirectUri,
           UserIdentifier.AnyUser,
@@ -63,7 +63,7 @@ namespace OnAPPoint.Controllers
           Request.Params["code"],                                         // the auth 'code' parameter from the Azure redirect.
           loginRedirectUri,                                               // same redirectUri as used before in Login method.
           new ClientCredential(Const.Settings.ClientId, Const.Settings.ClientSecret), // use the client ID and secret to establish app identity.
-          Const.GraphApi.ApiResource);
+          Const.Settings.GraphApiResource);
 
       // Save the token in the session.
       Session.Add("AccessToken", authResult.AccessToken);
