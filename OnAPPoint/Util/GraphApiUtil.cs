@@ -15,9 +15,9 @@ namespace OnAPPoint.Util
   {
     private static string Endpoint = Const.Settings.GraphApiResource + "/v1.0/me";
     private static string Contacts = "/contacts";
-    /*private static string Calendars = "/calendars";
+    private static string Calendars = "/calendars";
+    private static string Messages = "/messages";
     private static string Events = "/events";
-    private static string Messages = "/messages";*/
 
     public static string test()
     {
@@ -32,7 +32,7 @@ namespace OnAPPoint.Util
       return JsonUtil.seralizeObject(cont);
     }
 
-    private static async Task<List<T>> GetItem<T>(string query, string accessToken)
+    private static async Task<List<T>> GetItem<T>(string query, string accessToken) where T : Entity
     {
       using (var client = new HttpClient())
       {
@@ -52,6 +52,21 @@ namespace OnAPPoint.Util
     public static async Task<List<Contact>> GetContacts(string accessToken)
     {
       return await GetItem<Contact>(Contacts, accessToken);
+    }
+
+    public static async Task<List<Calendar>> GetCalendars(string accessToken)
+    {
+      return await GetItem<Calendar>(Calendars, accessToken);
+    }
+
+    public static async Task<List<Message>> GetMessages(string accessToken)
+    {
+      return await GetItem<Message>(Messages, accessToken);
+    }
+
+    public static async Task<List<Event>> GetEvents(string accessToken)
+    {
+      return await GetItem<Event>(Events, accessToken);
     }
   }
 
