@@ -1,4 +1,8 @@
 ﻿<h2>GraphTest</h2>
+<div class="alert alert-@ViewBag.AlertType">
+  <span class="glyphicon @ViewBag.AlertIcon" aria-hidden="true"></span>
+  @ViewBag.AlertMsg
+</div>
 <form>
   <p>
     <button formaction="@Url.Content("~/GraphApi/ListContacts")">List Contacts</button>

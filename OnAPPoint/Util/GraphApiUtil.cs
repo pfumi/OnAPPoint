@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,11 @@ namespace OnAPPoint.Util
 {
   public static class GraphApiUtil
   {
-
     private static string Endpoint = Const.Settings.GraphApiResource + "/v1.0/me";
     private static string Contacts = "/contacts";
-    private static string Calendars = "/calendars";
+    /*private static string Calendars = "/calendars";
     private static string Events = "/events";
-    private static string Messages = "/messages";
+    private static string Messages = "/messages";*/
 
     public static string test()
     {
@@ -34,30 +34,25 @@ namespace OnAPPoint.Util
 
     private static async Task<List<T>> GetItem<T>(string query, string accessToken)
     {
-      List<T> items = new List<T>();
       using (var client = new HttpClient())
       {
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await client.GetAsync(Endpoint + query);
+        if (!response.IsSuccessStatusCode)
+        {
+          //TODO Logging
+          return null;
+        }
         string json = await response.Content.ReadAsStringAsync();
         JObject result = JObject.Parse(await response.Content.ReadAsStringAsync());
-        if (result["error"] != null)
-        {
-          //TODO do something, logging at least
-          return items;
-        }
-        foreach (JObject obj in result["value"]) {
-          items.Add(obj.ToObject<T>());
-        }
+        return result["value"].ToObject<List<T>>();
       }
-      return items;
     }
 
     public static async Task<List<Contact>> GetContacts(string accessToken)
     {
       return await GetItem<Contact>(Contacts, accessToken);
     }
-
   }
 
 }
