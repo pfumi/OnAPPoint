@@ -1,18 +1,17 @@
-﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Microsoft.Graph;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using OnAPPoint.Models;
 using OnAPPoint.Util;
+using Resources;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace OnAPPoint.Controllers
 {
   public class HomeController : Controller
   {
+    UsersService usersService = new UsersService();
 
     // The URL that auth should redirect to after a successful login.
     Uri loginRedirectUri => new Uri(Url.Action(nameof(Authorize), "Home", null, Request.Url.Scheme));
@@ -20,9 +19,31 @@ namespace OnAPPoint.Controllers
     // The URL to redirect to after a logout.
     Uri logoutRedirectUri => new Uri(Url.Action(nameof(Index), "Home", null, Request.Url.Scheme));
 
-    public ActionResult Index()
+    public async Task<ActionResult> Index()
     {
-      return View();
+
+        return View();
+    }
+
+    // Get all users.
+    public async Task<ActionResult> GetUsers()
+    {
+      ResultsViewModel results = new ResultsViewModel();
+      try
+      {
+
+        // Initialize the GraphServiceClient.
+        GraphServiceClient graphClient = GraphSDKHelper.GetAuthenticatedClient();
+
+        // Get users.
+        results.Items = await usersService.GetUsers(graphClient);
+      }
+      catch (ServiceException se)
+      {
+        if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
+        return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
+      }
+      return View("Users", results);
     }
 
     public ActionResult Logout()

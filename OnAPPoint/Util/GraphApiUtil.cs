@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Graph;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace OnAPPoint.Util
   public static class GraphApiUtil
   {
 
-    private static string Endpoint = Const.Settings.GraphApiResource + "/v1.0/me";
+    private static string Endpoint = Const.Settings.GraphApiResource + "/v1.0/users/f099d2f3-aab5-4ceb-a9e6-c45ad01a8212";
     private static string Contacts = "/contacts";
     private static string Calendars = "/calendars";
     private static string Events = "/events";
@@ -24,10 +25,13 @@ namespace OnAPPoint.Util
       Contact cont = new Contact();
       cont.GivenName = "Max";
       cont.Surname = "Muster";
-      EmailAddress email = new EmailAddress();
-      email.Name = "Max Muster";
-      email.Address = "master.muster@email.com";
-      cont.EmailAddresses.Add(email);
+      List<EmailAddress> email = new List<EmailAddress>();
+      email.Add(new EmailAddress
+      {
+        Address = "master.muster@email.com",
+        Name = "Max Muster"
+      });
+      cont.EmailAddresses = email;
       cont.MobilePhone = "0123456789";
       return JsonUtil.seralizeObject(cont);
     }
