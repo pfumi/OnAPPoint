@@ -1,8 +1,24 @@
 ﻿<h2>GraphTest</h2>
+<div class="alert alert-@ViewBag.AlertType">
+  <span class="glyphicon @ViewBag.AlertIcon" aria-hidden="true"></span>
+  @ViewBag.AlertMsg
+</div>
 <form>
+  <h3>GET</h3>
   <p>
-    <button formaction="@Url.Content("~/GraphApi/ListContacts")">List Contacts</button>
+    <button formaction="@Url.Content("~/GraphApi/ListContacts")">Contacts</button>
+    <button formaction="@Url.Content("~/GraphApi/ListCalendars")">Calendars</button>
+    <button formaction="@Url.Content("~/GraphApi/ListEvents")">Calendar Events</button>
+    <button formaction="@Url.Content("~/GraphApi/ListMessages")">Messages</button>
   </p>
+  <h3>POST</h3>
+  <p></p>
+  <h3>PATCH</h3>
+  <p></p>
+  <h3>PUT</h3>
+  <p></p>
+  <h3>DELETE</h3>
+  <p></p>
   <div>
     @{
       if (@ViewBag.Result != null)

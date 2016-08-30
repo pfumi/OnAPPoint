@@ -1,4 +1,5 @@
-﻿using Microsoft.Graph;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Graph;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -13,12 +14,11 @@ namespace OnAPPoint.Util
 {
   public static class GraphApiUtil
   {
-
-    private static string Endpoint = Const.Settings.GraphApiResource + "/v1.0/users/f099d2f3-aab5-4ceb-a9e6-c45ad01a8212";
+    private static string Endpoint = Const.Settings.GraphApiResource + "/v1.0/me";
     private static string Contacts = "/contacts";
     private static string Calendars = "/calendars";
-    private static string Events = "/events";
     private static string Messages = "/messages";
+    private static string Events = "/events";
 
     public static string test()
     {
@@ -36,25 +36,21 @@ namespace OnAPPoint.Util
       return JsonUtil.seralizeObject(cont);
     }
 
-    private static async Task<List<T>> GetItem<T>(string query, string accessToken)
+    private static async Task<List<T>> GetItem<T>(string query, string accessToken) where T : Entity
     {
-      List<T> items = new List<T>();
       using (var client = new HttpClient())
       {
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await client.GetAsync(Endpoint + query);
+        if (!response.IsSuccessStatusCode)
+        {
+          //TODO Logging
+          return null;
+        }
         string json = await response.Content.ReadAsStringAsync();
         JObject result = JObject.Parse(await response.Content.ReadAsStringAsync());
-        if (result["error"] != null)
-        {
-          //TODO do something, logging at least
-          return items;
-        }
-        foreach (JObject obj in result["value"]) {
-          items.Add(obj.ToObject<T>());
-        }
+        return result["value"].ToObject<List<T>>();
       }
-      return items;
     }
 
     public static async Task<List<Contact>> GetContacts(string accessToken)
@@ -62,6 +58,20 @@ namespace OnAPPoint.Util
       return await GetItem<Contact>(Contacts, accessToken);
     }
 
+    public static async Task<List<Calendar>> GetCalendars(string accessToken)
+    {
+      return await GetItem<Calendar>(Calendars, accessToken);
+    }
+
+    public static async Task<List<Message>> GetMessages(string accessToken)
+    {
+      return await GetItem<Message>(Messages, accessToken);
+    }
+
+    public static async Task<List<Event>> GetEvents(string accessToken)
+    {
+      return await GetItem<Event>(Events, accessToken);
+    }
   }
 
 }
