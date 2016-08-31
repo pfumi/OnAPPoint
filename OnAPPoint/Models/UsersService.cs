@@ -41,7 +41,8 @@ namespace OnAPPoint.Models
                         items.Add(new ResultsItem
                         {
                             Display = user.DisplayName,
-                            Id = user.Id
+                            Id = user.Id,
+                            UserPrincipalName = user.UserPrincipalName
                         });
                     }
                 }

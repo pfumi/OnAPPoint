@@ -4,6 +4,7 @@ using OnAPPoint.Models;
 using OnAPPoint.Util;
 using Resources;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -19,7 +20,22 @@ namespace OnAPPoint.Controllers
     // The URL to redirect to after a logout.
     Uri logoutRedirectUri => new Uri(Url.Action(nameof(Index), "Home", null, Request.Url.Scheme));
 
-    public async Task<ActionResult> Index()
+    private void PrepareViewBag(ResultsViewModel results)
+    {
+      if (results.Items.Count == 0)
+      {
+        ViewBag.AlertIcon = "glyphicon-exclamation-sign";
+        ViewBag.AlertType = "danger";
+        ViewBag.AlertMsg = "Es ist ein Fehler aufgetreten.";
+        return;
+      }
+
+      ViewBag.AlertIcon = "glyphicon-info-sign";
+      ViewBag.AlertType = "success";
+      ViewBag.AlertMsg = "Es " + (results.Items.Count == 1 ? "wurde " : "wurden ") + results.Items.Count + (results.Items.Count == 1 ? " Eintrag" : " Einträge") + " zurückgeliefert.";
+    }
+
+    public ActionResult Index()
     {
 
         return View();
@@ -43,6 +59,10 @@ namespace OnAPPoint.Controllers
         if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
         return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
       }
+
+      ViewBag.Title = "GetUsers";
+      PrepareViewBag(results);
+
       return View("Users", results);
     }
 

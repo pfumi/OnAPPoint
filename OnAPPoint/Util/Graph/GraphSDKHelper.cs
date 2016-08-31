@@ -16,20 +16,23 @@ namespace OnAPPoint.Util
         // Get an authenticated Microsoft Graph Service client.
         public static GraphServiceClient GetAuthenticatedClient()
         {
-            GraphServiceClient graphClient = new GraphServiceClient(
+          if (graphClient == null)
+          {
+            graphClient = new GraphServiceClient(
                 new DelegateAuthenticationProvider(
                     async (requestMessage) =>
                     {
-                        string accessToken = await AppOnlyAuthProvider.Instance.GetUserAccessTokenAsync();
+                      string accessToken = await AppOnlyAuthProvider.Instance.GetUserAccessTokenAsync();
 
-                        // Append the access token to the request.
-                        requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
+                          // Append the access token to the request.
+                          requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
 
-                        // Get event times in the current time zone.
-                        requestMessage.Headers.Add("Prefer", "outlook.timezone=\"" + TimeZoneInfo.Local.Id + "\"");
+                          // Get event times in the current time zone.
+                          requestMessage.Headers.Add("Prefer", "outlook.timezone=\"" + TimeZoneInfo.Local.Id + "\"");
                     }));
+          }
 
-            return graphClient;
+          return graphClient;
         }
 
         public static void SignOutClient()

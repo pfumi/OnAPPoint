@@ -3,6 +3,7 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
+using Microsoft.Graph;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,6 +17,7 @@ namespace OnAPPoint.Models
         // The ID and display name for the entity's radio button.
         public string Id { get; set; }
         public string Display { get; set; }
+        public string UserPrincipalName { get; set; } 
 
         // The properties of an entity that display in the UI.
         public Dictionary<string, object> Properties;
@@ -34,13 +36,15 @@ namespace OnAPPoint.Models
         public bool Selectable { get; set; }
 
         // The list of entities to display.
-        public IEnumerable<ResultsItem> Items { get; set; }
+        public IList<ResultsItem> Items { get; set; }
+//        public IEnumerable<ResultsItem> Items { get; set; }
         public ResultsViewModel()
         {
         
             // This is how an entity ID is passed to methods that require it.
             Selectable = true;
-            Items = Enumerable.Empty<ResultsItem>();
+            Items = null;
+//            Items = Enumerable.Empty<ResultsItem>();
         }
     }
 }
