@@ -11,24 +11,25 @@ namespace OnAPPoint.Util
 {
     public class GraphSDKHelper
     {
-        private static GraphServiceClient graphClient = null;
+        private static GraphServiceClient graphClient;
+        private static string accessToken = null;
 
         // Get an authenticated Microsoft Graph Service client.
         public static GraphServiceClient GetAuthenticatedClient()
         {
-          if (graphClient == null)
+          if (accessToken == null)
           {
             graphClient = new GraphServiceClient(
                 new DelegateAuthenticationProvider(
                     async (requestMessage) =>
                     {
-                      string accessToken = await AppOnlyAuthProvider.Instance.GetUserAccessTokenAsync();
+                      accessToken = await AppOnlyAuthProvider.Instance.GetUserAccessTokenAsync();
 
-                          // Append the access token to the request.
-                          requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
+                      // Append the access token to the request.
+                      requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
 
-                          // Get event times in the current time zone.
-                          requestMessage.Headers.Add("Prefer", "outlook.timezone=\"" + TimeZoneInfo.Local.Id + "\"");
+                      // Get event times in the current time zone.
+                      requestMessage.Headers.Add("Prefer", "outlook.timezone=\"" + TimeZoneInfo.Local.Id + "\"");
                     }));
           }
 
@@ -37,7 +38,8 @@ namespace OnAPPoint.Util
 
         public static void SignOutClient()
         {
-            graphClient = null;
+          accessToken = null;
+          graphClient = null;
         }
     }
 }

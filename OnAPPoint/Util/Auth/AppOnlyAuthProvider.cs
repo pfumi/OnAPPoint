@@ -16,11 +16,11 @@ namespace OnAPPoint.Util
     {
         // Properties used to get and manage an access token.
         private string appId = ConfigurationManager.AppSettings["ClientID"];
-        private string pfxFilePath = ConfigurationManager.AppSettings["ida:pfxFilePath"];
-        private string x509CertificatePW = ConfigurationManager.AppSettings["ida:x509CertificatePW"];
+        //private string pfxFilePath = ConfigurationManager.AppSettings["ida:pfxFilePath"];
+        //private string x509CertificatePW = ConfigurationManager.AppSettings["ida:x509CertificatePW"];
         private string tenant = ConfigurationManager.AppSettings["ida:tenant"];
 
-        private string accessToken;
+        private string accessToken = null;
 
         private static readonly AppOnlyAuthProvider instance = new AppOnlyAuthProvider();
         private AppOnlyAuthProvider() { }

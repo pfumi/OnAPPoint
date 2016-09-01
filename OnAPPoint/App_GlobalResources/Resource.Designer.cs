@@ -781,6 +781,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UserPrincipalName.
+        /// </summary>
+        internal static string Prop_UserPrincipalName {
+            get {
+                return ResourceManager.GetString("Prop_UserPrincipalName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sign in with Microsoft.
         /// </summary>
         internal static string SignIn {

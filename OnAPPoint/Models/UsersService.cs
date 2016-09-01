@@ -42,7 +42,10 @@ namespace OnAPPoint.Models
                         {
                             Display = user.DisplayName,
                             Id = user.Id,
-                            UserPrincipalName = user.UserPrincipalName
+                            Properties = new Dictionary<string, object>
+                            {
+                                { Resource.Prop_UserPrincipalName, user.UserPrincipalName}
+                            }
                         });
                     }
                 }

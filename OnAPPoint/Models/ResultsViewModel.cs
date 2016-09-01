@@ -17,7 +17,7 @@ namespace OnAPPoint.Models
         // The ID and display name for the entity's radio button.
         public string Id { get; set; }
         public string Display { get; set; }
-        public string UserPrincipalName { get; set; } 
+        public string Type { get; set; }
 
         // The properties of an entity that display in the UI.
         public Dictionary<string, object> Properties;

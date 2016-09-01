@@ -437,6 +437,10 @@
     <value>URL</value>
     <comment>Property display name for Results view</comment>
   </data>
+  <data name="Prop_UserPrincipalName" xml:space="preserve">
+    <value>UserPrincipalName</value>
+    <comment>Property display name for Results view</comment>
+  </data>
   <data name="SignIn" xml:space="preserve">
     <value>Sign in with Microsoft</value>
     <comment>Link to Account.SignIn action</comment>

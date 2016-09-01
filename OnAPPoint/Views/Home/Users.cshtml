@@ -1,4 +1,5 @@
-﻿@model OnAPPoint.Models.ResultsViewModel
+﻿@using Resources;
+@model OnAPPoint.Models.ResultsViewModel
 
 <div class="container">
   <h2>@ViewBag.Title</h2>
@@ -19,7 +20,13 @@
           <div class="panel-body">
             <h4>User <b>@item.Display</b></h4>
             <p>@item.Id</p>
-            <p>@item.UserPrincipalName</p>
+            @if (item.Properties.Count > 0)
+            {
+              if (item.Properties.ContainsKey("UserPrincipalName"))
+              {
+                <p>@item.Properties["UserPrincipalName"]</p>
+              }
+            }
           </div>
         </div>
       }

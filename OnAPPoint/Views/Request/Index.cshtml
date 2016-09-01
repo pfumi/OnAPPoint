@@ -1,0 +1,79 @@
+﻿@using Resources;
+@model OnAPPoint.Models.ResultsViewModel
+
+<div class="container">
+  <h2>@ViewBag.Title</h2>
+  <div id="users-header-alert" class="alert alert-@ViewBag.AlertType">
+    <span class="glyphicon @ViewBag.AlertIcon" aria-hidden="true"></span>
+    @ViewBag.AlertMsg
+  </div>
+
+  <h3>Kalenderauswahl aus der Kalendergruppe Mitarbeiter:</h3>
+
+  @if (Model != null)
+  {
+    if (Model.Items.Count > 0)
+    {
+      <!-- Kalenderauswahl erstellen -->
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="btn-group-vertical btn-group-lg">
+            @foreach (var item in Model.Items)
+            {
+              if (item.Type == "Calendar")
+              {
+                <button type="button" class="btn btn-primary">@item.Display</button>
+              }
+            }
+          </div>
+        </div>
+      </div>
+
+      <h3>Details der Kalender:</h3>
+
+      <!-- Details ausgeben-->
+      foreach (var item in Model.Items)
+      {
+        if (item.Type == "Calendar")
+        {
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              <h3 class="panel-title">Kalender</h3>
+            </div>
+            <div class="panel-body">
+              <h4><b>@item.Display</b></h4>
+              <p>@item.Id</p>
+              @if (item.Properties.Count > 0)
+              {
+                if (item.Properties.ContainsKey("start"))
+                { <p>@Resource.Prop_Start @item.Properties["start"]</p> }
+                if (item.Properties.ContainsKey("end"))
+                { <p>@Resource.Prop_End @item.Properties["end"]</p> }
+              }
+            </div>
+          </div>
+        }
+        else if (item.Type == "Event")
+        {
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title">Termin</h3>
+            </div>
+            <div class="panel-body">
+              <h4><b>@item.Display</b></h4>
+              <p>@item.Id</p>
+              @if (item.Properties.Count > 0)
+              {
+                if (item.Properties.ContainsKey("start"))
+                { <p>@Resource.Prop_Start @item.Properties["start"]</p> }
+                if (item.Properties.ContainsKey("end"))
+                { <p>@Resource.Prop_End @item.Properties["end"]</p> }
+              }
+            </div>
+          </div>
+        }
+      }
+    }
+  }
+
+</div>
