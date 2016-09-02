@@ -36,8 +36,9 @@ namespace OnAPPoint.Util
         // Gets an access token. First tries to get the token from the token cache.
         public async Task<string> GetUserAccessTokenAsync()
         {
-            if (accessToken != null)
-              return (accessToken);
+// TODO: AppOnly accessToken - prüfen, ob einer schon vorhanden ist und auch gültig ist
+//            if (accessToken != null)
+//              return (accessToken);
 
             X509Store certStore = new X509Store(StoreName.My, StoreLocation.CurrentUser);
             certStore.Open(OpenFlags.ReadOnly);
